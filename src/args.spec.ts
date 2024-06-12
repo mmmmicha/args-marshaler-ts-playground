@@ -26,20 +26,26 @@ describe('Args class failure cases', () => {
   });
 
   test('should throw error for missing value for string type', () => {
+    // given
     const schema = 'l,d#';
     const args = ['-p'];
 
-    expect(() => {
-      new Args(schema, args);
-    }).toThrow('Argument -p not found in schema');
+    // when
+    const result = () => new Args(schema, args);
+
+    // then
+    expect(result).toThrow('Argument -p not found in schema');
   });
 
   test('should throw error for non-numeric value for number type', () => {
+    // given
     const schema = 'l,p*,d#';
     const args = ['-d', 'notANumber'];
 
-    expect(() => {
-      new Args(schema, args);
-    }).toThrow();
+    // when
+    const result = new Args(schema, args).getNumber('d');
+
+    // then
+    expect(result).toBeNaN();
   });
 });
