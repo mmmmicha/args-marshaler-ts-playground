@@ -1,7 +1,7 @@
 import { Args } from './args';
 
 describe('Args class failure cases', () => {
-  test('should throw error for unknown argument', () => {
+  it('should throw error for unknown argument', () => {
     // given
     const schema = 'l:boolean,p:string,d:number';
     const args = ['-x', 'someValue'];
@@ -13,7 +13,7 @@ describe('Args class failure cases', () => {
     expect(result).toThrow('Argument -x not found in schema');
   });
 
-  test('should throw error for unsupported type', () => {
+  it('should throw error for unsupported type', () => {
     // given
     const schema = 'l:boolean,p:string,d:number,f:float';
     const args = ['-f', '3.14'];
@@ -25,7 +25,7 @@ describe('Args class failure cases', () => {
     expect(result).toThrow('Unsupported type float');
   });
 
-  test('should throw error for missing value for string type', () => {
+  it('should throw error for missing value for string type', () => {
     // given
     const schema = 'l:boolean,d:number';
     const args = ['-p'];
@@ -37,7 +37,7 @@ describe('Args class failure cases', () => {
     expect(result).toThrow('Argument -p not found in schema');
   });
 
-  test('should throw error for non-numeric value for number type', () => {
+  it('should throw error for non-numeric value for number type', () => {
     // given
     const schema = 'l:boolean,p:string,d:number';
     const args = ['-d', 'notANumber'];
@@ -47,5 +47,17 @@ describe('Args class failure cases', () => {
 
     // then
     expect(result).toBeNaN();
+  });
+
+  it('should throw error for undefined invalid type', () => {
+    // given
+    const schema = 'l::boolean';
+    const args = ['-l'];
+
+    // when
+    const result = () => new Args(schema, args);
+
+    // then
+    expect(result).toThrow('Invalid type :boolean');
   });
 });

@@ -2,6 +2,7 @@ export class Args {
   private schema: Map<string, any>;
   private args: string[];
   private parsedArgs: Map<string, any>;
+  private types = ['boolean', 'string', 'number'];
 
   constructor(schema: string, args: string[]) {
     this.schema = this.parseSchema(schema);
@@ -18,6 +19,9 @@ export class Args {
       if (trimmedElement.length > 0) {
         const key = trimmedElement[0];
         const type = trimmedElement.slice(2);
+        if (!this.types.includes(type)) {
+          throw new Error(`Invalid type ${type}`);
+        }
         map.set(key, type);
       }
     });
