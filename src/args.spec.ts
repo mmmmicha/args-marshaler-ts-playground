@@ -14,12 +14,15 @@ describe('Args class failure cases', () => {
   });
 
   test('should throw error for unsupported type', () => {
+    // given
     const schema = 'l,p*,d#,f##';
     const args = ['-f', '3.14'];
 
-    expect(() => {
-      new Args(schema, args);
-    }).toThrow('Unsupported type ##');
+    // when
+    const result = () => new Args(schema, args);
+
+    // then
+    expect(result).toThrow('Unsupported type ##');
   });
 
   test('should throw error for missing value for string type', () => {
