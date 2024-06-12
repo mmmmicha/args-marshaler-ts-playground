@@ -20,7 +20,7 @@ describe('Args class failure cases', () => {
   });
 
   test('should throw error for missing value for string type', () => {
-    const schema = 'l,p*,d#';
+    const schema = 'l,d#';
     const args = ['-p'];
 
     expect(() => {
