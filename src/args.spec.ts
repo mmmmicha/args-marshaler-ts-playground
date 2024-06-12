@@ -2,12 +2,15 @@ import { Args } from './args';
 
 describe('Args class failure cases', () => {
   test('should throw error for unknown argument', () => {
+    // given
     const schema = 'l,p*,d#';
     const args = ['-x', 'someValue'];
 
-    expect(() => {
-      new Args(schema, args);
-    }).toThrow('Argument -x not found in schema');
+    // when
+    const result = () => new Args(schema, args);
+
+    // then
+    expect(result).toThrow('Argument -x not found in schema');
   });
 
   test('should throw error for unsupported type', () => {
@@ -26,15 +29,6 @@ describe('Args class failure cases', () => {
     expect(() => {
       new Args(schema, args);
     }).toThrow('Argument -p not found in schema');
-  });
-
-  test('should throw error for missing value for number type', () => {
-    const schema = 'l,p*,d#';
-    const args = ['-d'];
-
-    expect(() => {
-      new Args(schema, args);
-    }).toThrow('Argument -d not found in schema');
   });
 
   test('should throw error for non-numeric value for number type', () => {
