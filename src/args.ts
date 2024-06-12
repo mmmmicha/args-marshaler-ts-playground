@@ -17,7 +17,7 @@ export class Args {
       const trimmedElement = element.trim();
       if (trimmedElement.length > 0) {
         const key = trimmedElement[0];
-        const type = trimmedElement.slice(1);
+        const type = trimmedElement.slice(2);
         map.set(key, type);
       }
     });
@@ -33,14 +33,14 @@ export class Args {
           throw new Error(`Argument -${currentArgument} not found in schema`);
         }
         const type = this.schema.get(currentArgument);
-        if (type === '') {
+        if (type === 'boolean') {
           this.parsedArgs.set(currentArgument, true);
         }
       } else if (currentArgument) {
         const type = this.schema.get(currentArgument);
-        if (type === '*') {
+        if (type === 'string') {
           this.parsedArgs.set(currentArgument, arg);
-        } else if (type === '#') {
+        } else if (type === 'number') {
           this.parsedArgs.set(currentArgument, Number(arg));
         } else {
           throw new Error(`Unsupported type ${type}`);
@@ -64,7 +64,7 @@ export class Args {
 }
 
 // Usage example:
-const schema = 'l,p*,d#';
+const schema = 'l:boolean,p:string,d:number';
 const args = ['-l', '-p', '8080', '-d', '3.14'];
 const parsedArgs = new Args(schema, args);
 
