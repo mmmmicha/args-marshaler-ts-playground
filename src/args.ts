@@ -1,4 +1,4 @@
-class Args {
+export class Args {
   private schema: Map<string, any>;
   private args: string[];
   private parsedArgs: Map<string, any>;
