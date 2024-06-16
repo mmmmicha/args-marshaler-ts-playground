@@ -3,6 +3,7 @@ export class Args {
   private args: string[];
   private parsedArgs: Map<string, any>;
   private types = ['boolean', 'string', 'number'];
+  private currentArgument: string | undefined;
 
   constructor(schema: string, args: string[]) {
     this.schema = this.parseSchema(schema);
@@ -29,27 +30,28 @@ export class Args {
   }
 
   private parseArgs(): void {
-    let currentArgument: string | undefined;
     this.args.forEach((arg) => {
       if (arg.startsWith('-')) {
-        currentArgument = arg.substring(1);
-        if (!this.schema.has(currentArgument)) {
-          throw new Error(`Argument -${currentArgument} not found in schema`);
+        this.currentArgument = arg.substring(1);
+        if (!this.schema.has(this.currentArgument)) {
+          throw new Error(
+            `Argument -${this.currentArgument} not found in schema`,
+          );
         }
-        const type = this.schema.get(currentArgument);
+        const type = this.schema.get(this.currentArgument);
         if (type === 'boolean') {
-          this.parsedArgs.set(currentArgument, true);
+          this.parsedArgs.set(this.currentArgument, true);
         }
-      } else if (currentArgument) {
-        const type = this.schema.get(currentArgument);
+      } else if (this.currentArgument) {
+        const type = this.schema.get(this.currentArgument);
         if (type === 'string') {
-          this.parsedArgs.set(currentArgument, arg);
+          this.parsedArgs.set(this.currentArgument, arg);
         } else if (type === 'number') {
-          this.parsedArgs.set(currentArgument, Number(arg));
+          this.parsedArgs.set(this.currentArgument, Number(arg));
         } else {
           throw new Error(`Unsupported type ${type}`);
         }
-        currentArgument = undefined;
+        this.currentArgument = undefined;
       }
     });
   }
